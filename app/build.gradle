@@ -116,6 +116,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
+    //youtube player
+    implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$rootProject.youtubePlayerVersion"
+
     // Timber for logging
     implementation "com.jakewharton.timber:timber:$rootProject.timberLibraryVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

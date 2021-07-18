@@ -17,6 +17,14 @@
     <fragment
         android:id="@+id/movieDiscoveryFragment"
         android:name="io.github.fuadreza.muvi.presentation.discovery.MovieDiscoveryFragment"
-        android:label="MovieDiscoveryFragment" />
+        android:label="MovieDiscoveryFragment" >
+        <action
+            android:id="@+id/action_movieDiscoveryFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="io.github.fuadreza.muvi.presentation.detail.MovieDetailFragment"
+        android:label="MovieDetailFragment" />
 
 </navigation>

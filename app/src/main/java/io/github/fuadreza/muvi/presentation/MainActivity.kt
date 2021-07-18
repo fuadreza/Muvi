@@ -15,5 +15,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
     override fun initViews() {
         super.initViews()
+        supportActionBar?.hide()
     }
 }

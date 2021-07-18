@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Muvi</string>
     <string name="select_genre">Select Genre</string>
+    <string name="summary">Overview</string>
 </resources>

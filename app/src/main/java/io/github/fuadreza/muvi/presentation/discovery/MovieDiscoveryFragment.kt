@@ -1,5 +1,7 @@
 package io.github.fuadreza.muvi.presentation.discovery
 
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.fuadreza.core_android.abstraction.BaseFragment
@@ -7,6 +9,7 @@ import io.github.fuadreza.core_android.data.vo.Results
 import io.github.fuadreza.muvi.R
 import io.github.fuadreza.muvi.databinding.FragmentMovieDiscoveryBinding
 import io.github.fuadreza.muvi.domain.entity.ItemMovieDiscovery
+import io.github.fuadreza.muvi.presentation.detail.MovieDetailFragment
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -67,7 +70,10 @@ class MovieDiscoveryFragment :
 
     private fun displayMoviesDiscovery(data: List<ItemMovieDiscovery>) {
         movieDiscoveryAdapter = MovieDiscoveryAdapter { itemMovieDiscovery ->
-            showToast("SELECTED: ${itemMovieDiscovery.title}")
+            findNavController().navigate(
+                R.id.action_movieDiscoveryFragment_to_movieDetailFragment,
+                bundleOf(MovieDetailFragment.ARG_KEY_MOVIE_ID to itemMovieDiscovery.id.toString())
+            )
         }
 
         binding.rvMoviesDiscovery.apply {
