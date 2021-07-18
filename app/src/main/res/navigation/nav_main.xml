@@ -9,6 +9,14 @@
         android:id="@+id/movieGenreFragment"
         android:name="io.github.fuadreza.muvi.presentation.genre.MovieGenreFragment"
         android:label="MovieGenreFragment"
-        tools:layout="@layout/fragment_movie_genres" />
+        tools:layout="@layout/fragment_movie_genres" >
+        <action
+            android:id="@+id/action_movieGenreFragment_to_movieDiscoveryFragment"
+            app:destination="@id/movieDiscoveryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDiscoveryFragment"
+        android:name="io.github.fuadreza.muvi.presentation.discovery.MovieDiscoveryFragment"
+        android:label="MovieDiscoveryFragment" />
 
 </navigation>
