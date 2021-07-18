@@ -1,0 +1,88 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = "1.5.0"
+        // Dependency Injection for Android Applications
+        // https://dagger.dev/hilt/gradle-setup
+        hilt_version = "2.35.1"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+
+        // https://dagger.dev/hilt/
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+
+ext {
+    // SDK Level and Tools
+    // https://source.android.com/setup/start/build-numbers
+    // -----------------------------------------------------
+    androidMinSdkVersion = 22 // Lollipop 5.1
+    androidTargetSdkVersion = 30 // Android 10
+    androidCompileSdkVersion = 30
+    buildToolsVersion = '30.0.3' // Android SDK Build Tools - Versions: https://developer.android.com/studio/releases/build-tools.html
+
+    // Google Products & Support library dependencies
+    // AndroidX Versions: https://developer.android.com/jetpack/androidx/versions
+    // -----------------------------------------------------
+    androidMultiDex = "2.0.1"
+    appCompatVersion = '1.2.0' // https://developer.android.com/jetpack/androidx/releases/appcompat
+    constraintLayoutVersion = '1.1.3' // https://developer.android.com/reference/android/support/constraint/ConstraintLayout
+    archComponentVersion = '2.1.0' // https://developer.android.com/topic/libraries/architecture/adding-components
+    lifecycleVersion = '2.2.0' // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    firebaseBomVersion = '26.1.1' // https://firebase.google.com/docs/android/setup
+    coreKtxVersion = '1.3.2' // https://developer.android.com/jetpack/androidx/releases/core
+    androidMaterialVersion = '1.3.0-beta01' // https://github.com/material-components/material-components-android/releases
+    viewPager2Version = '1.0.0' // https://developer.android.com/jetpack/androidx/releases/viewpager2
+    androidXHilt = '1.0.0-alpha01' // https://developer.android.com/jetpack/androidx/releases/hilt
+    workManager = '2.4.0' // https://developer.android.com/topic/libraries/architecture/workmanager/basics
+    roomVersion = "2.2.6" // https://developer.android.com/jetpack/androidx/releases/room
+    navigationVersion = '2.3.4'
+
+    // 3rd Parties Libraries
+    // -----------------------------------------------------
+    glideVersion = "4.11.0"
+    lottieVersion = '3.5.0'
+    retrofitVersion = '2.9.0' // https://square.github.io/retrofit/
+    okHttpVersion = '4.7.2' // https://github.com/square/okhttp
+    timberLibraryVersion = '4.7.1' // https://github.com/JakeWharton/timber
+    shimmerVersion = '0.5.0' // https://github.com/facebook/shimmer-android
+
+    // Testing
+    // -----------------------------------------------------
+
+    // Unit Test
+    junit = "4.13.1"
+    mockitoCore = "3.3.3"
+    mockK = "1.10.5"
+    kaspresso = "1.2.0"
+
+    // Android Test
+    androidTestCore = "1.3.0"
+    androidTestRunner = "1.3.0"
+    androidTestRules = "1.3.0"
+    androidTestExtJunit = "1.1.2"
+    androidTestEspressoCore = "3.3.0"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
