@@ -9,13 +9,13 @@ import javax.inject.Inject
 
 class MovieReviewMapper @Inject constructor() : Mapper<MovieReviewsDto, List<ItemMovieReview>>() {
     override fun map(input: MovieReviewsDto): List<ItemMovieReview> {
-        return input.results.map {
+        return input.results?.map {
             ItemMovieReview(
                 it.id,
                 it.author,
                 it.content,
                 it.updatedAt.toLocalDateFormat()
             )
-        }
+        } ?: emptyList()
     }
 }

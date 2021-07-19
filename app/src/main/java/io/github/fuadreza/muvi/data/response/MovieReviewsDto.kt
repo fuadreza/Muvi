@@ -9,7 +9,7 @@ data class MovieReviewsDto(
     @field:Json(name = "page")
     val page: Int,
     @field:Json(name = "results")
-    val results: List<Result>,
+    val results: List<Result>?,
 ) {
     data class Result(
         @field:Json(name = "author")
