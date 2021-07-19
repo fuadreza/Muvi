@@ -5,11 +5,9 @@ import io.github.fuadreza.core_android.data.vo.Results
 import io.github.fuadreza.muvi.data.mapper.MovieDetailMapper
 import io.github.fuadreza.muvi.data.mapper.MovieDiscoveryMapper
 import io.github.fuadreza.muvi.data.mapper.MovieGenreMapper
+import io.github.fuadreza.muvi.data.mapper.MovieYoutubeTrailerMapper
 import io.github.fuadreza.muvi.data.source.remote.MovieRemoteDataSource
-import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
-import io.github.fuadreza.muvi.domain.entity.ItemMovieDiscovery
-import io.github.fuadreza.muvi.domain.entity.MovieDetail
-import io.github.fuadreza.muvi.domain.entity.MovieGenre
+import io.github.fuadreza.muvi.domain.entity.*
 import io.github.fuadreza.muvi.domain.repository.MovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -20,7 +18,8 @@ class MovieRepositoryImpl @ExperimentalCoroutinesApi
     private val remoteDataSource: MovieRemoteDataSource,
     private val movieGenreMapper: MovieGenreMapper,
     private val movieDiscoveryMapper: MovieDiscoveryMapper,
-    private val movieDetailMapper: MovieDetailMapper
+    private val movieDetailMapper: MovieDetailMapper,
+    private val movieYoutubeTrailerMapper: MovieYoutubeTrailerMapper
 ) : MovieRepository {
     override suspend fun getMoviesGenres(): Results<List<MovieGenre>> {
         val result = remoteDataSource.getMovieGenres(dispatcher.io)
@@ -44,6 +43,15 @@ class MovieRepositoryImpl @ExperimentalCoroutinesApi
         val result = remoteDataSource.getMovieDetail(dispatcher.io, movieId)
         return when (result) {
             is Results.Success -> Results.Success(movieDetailMapper.map(result.data))
+            is Results.Error -> Results.Error(result.cause, result.code, result.errorMessage)
+            else -> Results.Error()
+        }
+    }
+
+    override suspend fun getMovieYoutubeTrailer(movieId: String): Results<MovieYoutubeTrailer> {
+        val result = remoteDataSource.getMovieVideos(dispatcher.io, movieId)
+        return when (result) {
+            is Results.Success -> Results.Success(movieYoutubeTrailerMapper.map(result.data))
             is Results.Error -> Results.Error(result.cause, result.code, result.errorMessage)
             else -> Results.Error()
         }

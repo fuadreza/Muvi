@@ -1,6 +1,9 @@
 package io.github.fuadreza.muvi.presentation.detail
 
 import androidx.navigation.fragment.findNavController
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.fuadreza.core_android.abstraction.BaseFragment
 import io.github.fuadreza.core_android.data.vo.Results
@@ -31,6 +34,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
         }
 
         vm.getMovieDetail(movieId ?: return)
+        vm.getMovieYoutubeTrailer(movieId ?: return)
     }
 
     private fun handleIntentArguments() {
@@ -58,6 +62,33 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
                 else -> {
                     setLoading(false)
                 }
+            }
+        })
+        vm.movieYoutubeTrailer.observe(viewLifecycleOwner, {
+            when (it) {
+                is Results.Loading -> {
+
+                }
+                is Results.Success -> {
+                    Timber.tag("RESULT").d("YOUTUBE: ${it.data}")
+                    displayYoutubeTrailer(it.data.key)
+                }
+                is Results.Error -> {
+                    Timber.tag("RESULT").d("ERROR: ${it.errorMessage.toString()}")
+                    showToast(it.errorMessage.toString())
+                }
+                else -> {
+
+                }
+            }
+        })
+    }
+
+    private fun displayYoutubeTrailer(key: String) {
+        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                super.onReady(youTubePlayer)
+                youTubePlayer.cueVideo(key, 0F)
             }
         })
     }
