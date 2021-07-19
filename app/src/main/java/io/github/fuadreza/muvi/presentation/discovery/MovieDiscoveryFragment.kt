@@ -8,8 +8,8 @@ import io.github.fuadreza.core_android.abstraction.BaseFragment
 import io.github.fuadreza.core_android.data.vo.Results
 import io.github.fuadreza.muvi.R
 import io.github.fuadreza.muvi.databinding.FragmentMovieDiscoveryBinding
-import io.github.fuadreza.muvi.domain.entity.ItemMovieDiscovery
 import io.github.fuadreza.muvi.presentation.detail.MovieDetailFragment
+import io.github.fuadreza.muvi.utils.EndlessRecyclerOnScrollListener
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -30,12 +30,15 @@ class MovieDiscoveryFragment :
 
     private var genreId: String? = null
     private var genreName: String? = null
+    private var page: Int = 1
 
     override fun initViews() {
         handleIntentArguments()
 
+        displayMoviesDiscovery()
+
         binding.genre = genreName ?: "Movie"
-        vm.getMoviesDiscoveryByGenre(genreId ?: return)
+        vm.getMoviesDiscoveryByGenre(genres = genreId ?: return, page = page)
     }
 
     private fun handleIntentArguments() {
@@ -54,7 +57,7 @@ class MovieDiscoveryFragment :
                 is Results.Success -> {
                     setLoading(false)
                     Timber.tag("RESULT").d("RESULT: ${it.data}")
-                    displayMoviesDiscovery(it.data)
+                    vm.addListMovie(it.data)
                 }
                 is Results.Error -> {
                     setLoading(false)
@@ -66,9 +69,14 @@ class MovieDiscoveryFragment :
                 }
             }
         })
+        vm.listMoviesDiscovery.observe(viewLifecycleOwner, {
+            if (it != null) {
+                movieDiscoveryAdapter.addItems(it)
+            }
+        })
     }
 
-    private fun displayMoviesDiscovery(data: List<ItemMovieDiscovery>) {
+    private fun displayMoviesDiscovery() {
         movieDiscoveryAdapter = MovieDiscoveryAdapter { itemMovieDiscovery ->
             findNavController().navigate(
                 R.id.action_movieDiscoveryFragment_to_movieDetailFragment,
@@ -76,13 +84,19 @@ class MovieDiscoveryFragment :
             )
         }
 
+        val linearLayoutManager = LinearLayoutManager(context)
+
         binding.rvMoviesDiscovery.apply {
             setHasFixedSize(false)
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
             adapter = movieDiscoveryAdapter
+            this.addOnScrollListener(object : EndlessRecyclerOnScrollListener(linearLayoutManager) {
+                override fun onLoadMore(current_page: Int) {
+                    vm.getMoviesDiscoveryByGenre(genres = genreId ?: return, current_page)
+                }
+            })
         }
 
-        movieDiscoveryAdapter.addItems(data)
     }
 
     private fun setLoading(state: Boolean) {

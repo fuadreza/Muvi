@@ -6,6 +6,7 @@ import io.github.fuadreza.muvi.data.response.MovieDetailDto
 import io.github.fuadreza.muvi.data.response.MovieDiscoveryDto
 import io.github.fuadreza.muvi.data.response.MovieGenreDto
 import io.github.fuadreza.muvi.data.service.MovieService
+import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -20,9 +21,9 @@ class MovieRemoteDataSource @Inject constructor(private val movieService: MovieS
 
     suspend fun getMoviesDiscoveryByGenre(
         dispatcherProvider: CoroutineDispatcher,
-        genre: String
+        params: GetMoviesDiscoveryParams
     ): Results<MovieDiscoveryDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMoviesDiscoveryByGenre(genre = genre) }
+        return safeApiCall(dispatcherProvider) { movieService.getMoviesDiscoveryByGenre(genres = params.genreId, page = params.page) }
     }
 
     suspend fun getMovieDetail(

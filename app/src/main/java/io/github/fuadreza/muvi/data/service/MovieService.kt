@@ -16,7 +16,8 @@ interface MovieService {
     @GET("/3/discover/movie")
     suspend fun getMoviesDiscoveryByGenre(
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
-        @Query("with_genres") genre: String
+        @Query("with_genres") genres: String,
+        @Query("page") page: Int
     ): MovieDiscoveryDto
 
     @GET("/3/movie/{movie_id}")

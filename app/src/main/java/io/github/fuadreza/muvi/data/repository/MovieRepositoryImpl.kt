@@ -6,6 +6,7 @@ import io.github.fuadreza.muvi.data.mapper.MovieDetailMapper
 import io.github.fuadreza.muvi.data.mapper.MovieDiscoveryMapper
 import io.github.fuadreza.muvi.data.mapper.MovieGenreMapper
 import io.github.fuadreza.muvi.data.source.remote.MovieRemoteDataSource
+import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
 import io.github.fuadreza.muvi.domain.entity.ItemMovieDiscovery
 import io.github.fuadreza.muvi.domain.entity.MovieDetail
 import io.github.fuadreza.muvi.domain.entity.MovieGenre
@@ -30,7 +31,7 @@ class MovieRepositoryImpl @ExperimentalCoroutinesApi
         }
     }
 
-    override suspend fun getMoviesDiscoveryByGenre(genre: String): Results<List<ItemMovieDiscovery>> {
+    override suspend fun getMoviesDiscoveryByGenre(genre: GetMoviesDiscoveryParams): Results<List<ItemMovieDiscovery>> {
         val result = remoteDataSource.getMoviesDiscoveryByGenre(dispatcher.io, genre)
         return when (result) {
             is Results.Success -> Results.Success(movieDiscoveryMapper.map(result.data))
