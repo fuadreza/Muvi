@@ -3,4 +3,6 @@
     <string name="select_genre">Select Genre</string>
     <string name="summary">Overview</string>
     <string name="trailer">Trailer</string>
+    <string name="review">Review</string>
+    <string name="review_empty">Review Empty</string>
 </resources>

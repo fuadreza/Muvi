@@ -4,7 +4,7 @@ import io.github.fuadreza.muvi.data.response.MovieVideosDto
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-class YoutubeFilterTest {
+class YoutubeFilterUnitTest {
     @Test
     fun filterYoutubeVideos(){
         val movieVideos = listOf(

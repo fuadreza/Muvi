@@ -2,10 +2,7 @@ package io.github.fuadreza.muvi.data.source.remote
 
 import io.github.fuadreza.core_android.data.source.RemoteDataSource
 import io.github.fuadreza.core_android.data.vo.Results
-import io.github.fuadreza.muvi.data.response.MovieDetailDto
-import io.github.fuadreza.muvi.data.response.MovieDiscoveryDto
-import io.github.fuadreza.muvi.data.response.MovieGenreDto
-import io.github.fuadreza.muvi.data.response.MovieVideosDto
+import io.github.fuadreza.muvi.data.response.*
 import io.github.fuadreza.muvi.data.service.MovieService
 import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,5 +36,12 @@ class MovieRemoteDataSource @Inject constructor(private val movieService: MovieS
         movieId: String
     ): Results<MovieVideosDto> {
         return safeApiCall(dispatcherProvider) { movieService.getMovieVideos(movieId = movieId) }
+    }
+
+    suspend fun getMovieReviews(
+        dispatcherProvider: CoroutineDispatcher,
+        movieId: String
+    ): Results<MovieReviewsDto> {
+        return safeApiCall(dispatcherProvider) { movieService.getMovieReviews(movieId = movieId) }
     }
 }

@@ -1,10 +1,7 @@
 package io.github.fuadreza.muvi.data.service
 
 import io.github.fuadreza.muvi.BuildConfig
-import io.github.fuadreza.muvi.data.response.MovieDetailDto
-import io.github.fuadreza.muvi.data.response.MovieDiscoveryDto
-import io.github.fuadreza.muvi.data.response.MovieGenreDto
-import io.github.fuadreza.muvi.data.response.MovieVideosDto
+import io.github.fuadreza.muvi.data.response.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -32,4 +29,10 @@ interface MovieService {
         @Path("movie_id") movieId: String,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): MovieVideosDto
+
+    @GET("/3/movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") movieId: String,
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
+    ): MovieReviewsDto
 }
