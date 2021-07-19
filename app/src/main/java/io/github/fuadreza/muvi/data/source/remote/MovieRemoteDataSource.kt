@@ -4,6 +4,7 @@ import io.github.fuadreza.core_android.data.source.RemoteDataSource
 import io.github.fuadreza.core_android.data.vo.Results
 import io.github.fuadreza.muvi.data.response.*
 import io.github.fuadreza.muvi.data.service.MovieService
+import io.github.fuadreza.muvi.domain.entity.GetMovieReviewParams
 import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,8 +41,8 @@ class MovieRemoteDataSource @Inject constructor(private val movieService: MovieS
 
     suspend fun getMovieReviews(
         dispatcherProvider: CoroutineDispatcher,
-        movieId: String
+        params: GetMovieReviewParams
     ): Results<MovieReviewsDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMovieReviews(movieId = movieId) }
+        return safeApiCall(dispatcherProvider) { movieService.getMovieReviews(movieId = params.movieId, page = params.page) }
     }
 }

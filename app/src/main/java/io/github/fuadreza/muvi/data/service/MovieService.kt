@@ -33,6 +33,7 @@ interface MovieService {
     @GET("/3/movie/{movie_id}/reviews")
     suspend fun getMovieReviews(
         @Path("movie_id") movieId: String,
-        @Query("api_key") apiKey: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY,
+        @Query("page") page: Int
     ): MovieReviewsDto
 }

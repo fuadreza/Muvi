@@ -28,8 +28,8 @@ class MovieRepositoryImpl @ExperimentalCoroutinesApi
         }
     }
 
-    override suspend fun getMoviesDiscoveryByGenre(genre: GetMoviesDiscoveryParams): Results<List<ItemMovieDiscovery>> {
-        val result = remoteDataSource.getMoviesDiscoveryByGenre(dispatcher.io, genre)
+    override suspend fun getMoviesDiscoveryByGenre(params: GetMoviesDiscoveryParams): Results<List<ItemMovieDiscovery>> {
+        val result = remoteDataSource.getMoviesDiscoveryByGenre(dispatcher.io, params)
         return when (result) {
             is Results.Success -> Results.Success(movieDiscoveryMapper.map(result.data))
             is Results.Error -> Results.Error(result.cause, result.code, result.errorMessage)
@@ -55,8 +55,8 @@ class MovieRepositoryImpl @ExperimentalCoroutinesApi
         }
     }
 
-    override suspend fun getMovieReviews(movieId: String): Results<List<ItemMovieReview>> {
-        val result = remoteDataSource.getMovieReviews(dispatcher.io, movieId)
+    override suspend fun getMovieReviews(params: GetMovieReviewParams): Results<List<ItemMovieReview>> {
+        val result = remoteDataSource.getMovieReviews(dispatcher.io, params)
         return when (result) {
             is Results.Success -> Results.Success(movieReviewMapper.map(result.data))
             is Results.Error -> Results.Error(result.cause, result.code, result.errorMessage)

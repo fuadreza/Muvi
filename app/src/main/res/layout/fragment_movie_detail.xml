@@ -12,10 +12,6 @@
             type="Boolean" />
 
         <variable
-            name="isReviewAvailable"
-            type="Boolean" />
-
-        <variable
             name="data"
             type="io.github.fuadreza.muvi.domain.entity.MovieDetail" />
     </data>
@@ -159,23 +155,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_reviews"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_review" />
-
-            <TextView
-                android:id="@+id/label_review_empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/review_empty"
-                android:textSize="14sp"
-                android:visibility="@{!isReviewAvailable ? View.VISIBLE : View.GONE}"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/label_review" />

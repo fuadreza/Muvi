@@ -4,7 +4,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.fuadreza.core_android.abstraction.BaseFragment
 import io.github.fuadreza.core_android.data.vo.Results
@@ -13,6 +12,7 @@ import io.github.fuadreza.muvi.R
 import io.github.fuadreza.muvi.databinding.FragmentMovieDetailBinding
 import io.github.fuadreza.muvi.domain.entity.MovieDetail
 import io.github.fuadreza.muvi.presentation.detail.review.MovieReviewAdapter
+import io.github.fuadreza.muvi.utils.EndlessRecyclerOnScrollListener
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -40,7 +40,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
 
         vm.getMovieDetail(movieId ?: return)
         vm.getMovieYoutubeTrailer(movieId ?: return)
-        vm.getMovieReviews(movieId ?: return)
+        vm.getMovieReviews(movieId ?: return, 1)
     }
 
     private fun handleIntentArguments() {
@@ -91,25 +91,25 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
         vm.movieReviews.observe(viewLifecycleOwner, {
             when (it) {
                 is Results.Loading -> {
-                    setReviewAvailable(false)
+
                 }
                 is Results.Success -> {
                     Timber.tag("RESULT").d("REVIEWS: ${it.data}")
-                    movieReviewAdapter.addItems(it.data)
-                    if(it.data.isEmpty()) {
-                        setReviewAvailable(false)
-                    }else {
-                        setReviewAvailable(true)
-                    }
+                    vm.addListMovieReview(it.data)
                 }
                 is Results.Error -> {
                     Timber.tag("RESULT").d("ERROR: ${it.errorMessage.toString()}")
                     showToast(it.errorMessage.toString())
-                    setReviewAvailable(false)
+
                 }
                 else -> {
-                    setReviewAvailable(false)
+
                 }
+            }
+        })
+        vm.listMovieReviews.observe(viewLifecycleOwner, {
+            if (it != null) {
+                movieReviewAdapter.addItems(it)
             }
         })
     }
@@ -128,23 +128,27 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
         })
     }
 
-    private fun displayMovieReviews(){
+    private fun displayMovieReviews() {
         movieReviewAdapter = MovieReviewAdapter {
 
         }
 
+        val linearLayoutManager = LinearLayoutManager(context)
+
         binding.rvReviews.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
             adapter = movieReviewAdapter
+            this.addOnScrollListener(object :
+                EndlessRecyclerOnScrollListener(linearLayoutManager, 1) {
+                override fun onLoadMore(current_page: Int) {
+                    vm.getMovieReviews(movieId = movieId ?: return, current_page)
+                }
+            })
         }
     }
 
     private fun setLoading(state: Boolean) {
         binding.isLoading = state
-    }
-
-    private fun setReviewAvailable(state: Boolean){
-        binding.isReviewAvailable = state
     }
 }
