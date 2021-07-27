@@ -6,6 +6,7 @@ import io.github.fuadreza.muvi.data.response.*
 import io.github.fuadreza.muvi.data.service.MovieService
 import io.github.fuadreza.muvi.domain.entity.GetMovieReviewParams
 import io.github.fuadreza.muvi.domain.entity.GetMoviesDiscoveryParams
+import io.github.fuadreza.muvi.utils.EspressoIdlingResource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -15,34 +16,39 @@ class MovieRemoteDataSource @Inject constructor(private val movieService: MovieS
     RemoteDataSource() {
 
     suspend fun getMovieGenres(dispatcherProvider: CoroutineDispatcher): Results<MovieGenreDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMovieGenres() }
+        EspressoIdlingResource.increment()
+        return safeApiCall(dispatcherProvider) { movieService.getMovieGenres() }.also { EspressoIdlingResource.decrement() }
     }
 
     suspend fun getMoviesDiscoveryByGenre(
         dispatcherProvider: CoroutineDispatcher,
         params: GetMoviesDiscoveryParams
     ): Results<MovieDiscoveryDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMoviesDiscoveryByGenre(genres = params.genreId, page = params.page) }
+        EspressoIdlingResource.increment()
+        return safeApiCall(dispatcherProvider) { movieService.getMoviesDiscoveryByGenre(genres = params.genreId, page = params.page) }.also { EspressoIdlingResource.decrement() }
     }
 
     suspend fun getMovieDetail(
         dispatcherProvider: CoroutineDispatcher,
         movieId: String
     ): Results<MovieDetailDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMovieDetail(movieId = movieId) }
+        EspressoIdlingResource.increment()
+        return safeApiCall(dispatcherProvider) { movieService.getMovieDetail(movieId = movieId) }.also { EspressoIdlingResource.decrement() }
     }
 
     suspend fun getMovieVideos(
         dispatcherProvider: CoroutineDispatcher,
         movieId: String
     ): Results<MovieVideosDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMovieVideos(movieId = movieId) }
+        EspressoIdlingResource.increment()
+        return safeApiCall(dispatcherProvider) { movieService.getMovieVideos(movieId = movieId) }.also { EspressoIdlingResource.decrement() }
     }
 
     suspend fun getMovieReviews(
         dispatcherProvider: CoroutineDispatcher,
         params: GetMovieReviewParams
     ): Results<MovieReviewsDto> {
-        return safeApiCall(dispatcherProvider) { movieService.getMovieReviews(movieId = params.movieId, page = params.page) }
+        EspressoIdlingResource.increment()
+        return safeApiCall(dispatcherProvider) { movieService.getMovieReviews(movieId = params.movieId, page = params.page) }.also { EspressoIdlingResource.decrement() }
     }
 }
