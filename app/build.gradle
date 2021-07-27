@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'org.jlleitschuh.gradle.ktlint'
     id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
 }
@@ -16,8 +17,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "io.github.fuadreza.muvi.AppTestRunner"
     }
 
     buildTypes {
@@ -58,6 +58,14 @@ android {
         // https://developer.android.com/topic/libraries/data-binding/start
         dataBinding = true
     }
+}
+
+// Configure ktlint plugin
+// Use `./gradlew ktlintFormat` command to format code.
+// https://github.com/jlleitschuh/ktlint-gradle#configuration
+ktlint {
+    debug = true
+    android = true
 }
 
 dependencies {
@@ -134,4 +142,18 @@ dependencies {
 
     //for testing retrofit.
     testImplementation("com.squareup.okhttp3:mockwebserver:4.7.2")
+
+    //testing hilt
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$rootProject.daggerHiltTesting"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltTesting"
+
+    androidTestImplementation "androidx.navigation:navigation-testing:2.3.2"
+
+    androidTestImplementation "com.kaspersky.android-components:kaspresso:$rootProject.kaspresso"
+
+    // Testing
+    debugImplementation("androidx.fragment:fragment-testing:$rootProject.androidFragmentTesting") {
+        exclude group:'androidx.test', module:'monitor'
+        exclude group: 'androidx.test', module: 'core'
+    }
 }

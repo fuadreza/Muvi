@@ -52,6 +52,7 @@ class MovieGenreFragment: BaseFragment<FragmentMovieGenresBinding, MovieGenreVie
                 }
                 is Results.Success -> {
                     setLoading(false)
+                    Timber.tag("RESULT").d("${it.data}")
                     displayMovieGenres(it.data)
                 }
                 is Results.Error -> {
